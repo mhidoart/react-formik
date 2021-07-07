@@ -16,7 +16,8 @@ function App() {
     socials: ["", "", ""],
     bio: "",
     city: "",
-    gender: ""
+    gender: "",
+    bloodType: ""
 
   }
   //select options:
@@ -32,6 +33,26 @@ function App() {
     { key: "Male", value: "M" },
     { key: "Femelle", value: "F" },
     { key: "Autre", value: "XYZ" }
+
+  ]
+
+  //chackbox options:
+  const bloodTypeOptions = [
+    { key: "A", value: "a" },
+    { key: "B", value: "b" },
+    { key: "AB", value: "ab" },
+    { key: "O", value: "o" },
+
+    { key: "A+", value: "a+" },
+    { key: "B+", value: "b+" },
+    { key: "AB+", value: "ab+" },
+    { key: "O+", value: "o+" },
+
+    { key: "A-", value: "a-" },
+    { key: "B-", value: "b-" },
+    { key: "AB-", value: "ab-" },
+    { key: "O-", value: "o-" }
+
 
   ]
 
@@ -208,6 +229,44 @@ function App() {
                       </Field>
                       <div id="gender" className="invalid-feedback d-block">
                         <ErrorMessage name="gender" />
+                      </div>
+                    </div>
+
+
+                    <div className="mb-3">
+                      <label htmlFor="gender" className="form-label">Song donation</label>
+                      <br></br>
+
+                      <Field
+                        as="select"
+                        name="bloodType" className="form-check-input" id="bloodType"
+                        options={bloodTypeOptions}
+                      >
+                        {
+                          ({ field }) => {
+                            return bloodTypeOptions.map(option => {
+                              return (
+                                <React.Fragment key={option.key} >
+                                  <input className="px-3"
+                                    {...field}
+                                    type="checkbox"
+                                    id={option.value}
+                                    value={option.value}
+                                    checked={field.value.includes(option.value)}
+
+                                  />
+                                  <label htmlFor="bloodType" className="form-label px-2">{option.key}</label>
+
+                                </React.Fragment>
+                              );
+                            });
+                          }
+                        }
+
+
+                      </Field>
+                      <div id="bloodType" className="invalid-feedback d-block">
+                        <ErrorMessage name="bloodType" />
                       </div>
                     </div>
 

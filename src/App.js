@@ -12,6 +12,27 @@ function App() {
       adresse1: "49,Jean Rostand",
       adresse2: "72 000 , Paris"
     },
+    socials: ["", "", ""],
+    bio: "",
+    city: ""
+
+  }
+  //select options:
+  const options = [
+    { key: "veuiller selectionner une ville  ", value: "" },
+    { key: "Taza", value: "taza" },
+    { key: "Fes ", value: "fes" },
+    { key: "Rabat  ", value: "rabat" }
+
+  ]
+  //if u want to initialise the form with data 
+  const userData = {
+    email: "azdef@pnn.com",
+    password: "azerty12",
+    adresses: {
+      adresse1: "49, Rue yenkens",
+      adresse2: "72 000 , new york "
+    },
     socials: ["", "", ""]
 
   }
@@ -19,11 +40,21 @@ function App() {
   const validationSchema = Yup.object({
     email: Yup.string().email("Email non valide").required("le champ email est obligatoire"),
     password: Yup.string().min(6, "password doit contenir au moins 6 charactères").required("le champ password est obligatoire"),
-    adresse1: Yup.string().min(6, "donnez au moin le numero de la rue et la vile")
+    adresse1: Yup.string().min(6, "donnez au moin le numero de la rue et la vile"),
+    bio: Yup.string().required().min(6, "champ bio est obligatoir"),
+    city: Yup.string().required()
+
+
+
+
+
+
+
   });
 
-  const onSubmit = values => {
+  const onSubmit = (values, onSubmitProps) => {
     console.log(values);
+    onSubmitProps.resetForm();
   }
 
 
@@ -32,7 +63,10 @@ function App() {
 
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={onSubmit} >
+      onSubmit={onSubmit}
+      validationOnMount
+      enableReinitialize
+    >
       {
         formik => (
 
@@ -92,6 +126,43 @@ function App() {
                       </div>
 
                     </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="adresse2" className="form-label">Biographie</label>
+                      <Field
+                        as="textarea"
+                        cols="30"
+                        rows="5"
+                        name="bio" className="form-control" id="bio" />
+                      <div id="bio" className="invalid-feedback d-block">
+                        <ErrorMessage name="bio" />
+                      </div>
+
+                    </div>
+
+
+                    <div className="mb-3">
+                      <label htmlFor="city" className="form-label">ville</label>
+                      <Field
+                        as="select"
+                        name="city" className="form-control" id="city"
+                        options={options}
+                      >
+                        {
+                          options.map(option => {
+                            return (
+                              <option forhtml="city" key={option.value} value={option.value} >{option.key}</option>
+                            );
+                          })
+                        }
+
+                        <div id="adresse2_help" className="invalid-feedback d-block">
+                          <ErrorMessage name="city" />
+                        </div>
+                      </Field>
+                    </div>
+
+
 
                     <button type="submit" className="btn btn-primary"
                       disabled={!formik.isValide && !formik.dirty}>Submit</button>

@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import React, { Component } from 'react';
 import * as Yup from 'yup';
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
     },
     socials: ["", "", ""],
     bio: "",
-    city: ""
+    city: "",
+    gender: ""
 
   }
   //select options:
@@ -25,6 +27,14 @@ function App() {
     { key: "Rabat  ", value: "rabat" }
 
   ]
+  //radiobox options:
+  const radioOptions = [
+    { key: "Male", value: "M" },
+    { key: "Femelle", value: "F" },
+    { key: "Autre", value: "XYZ" }
+
+  ]
+
   //if u want to initialise the form with data 
   const userData = {
     email: "azdef@pnn.com",
@@ -42,7 +52,8 @@ function App() {
     password: Yup.string().min(6, "password doit contenir au moins 6 charactères").required("le champ password est obligatoire"),
     adresse1: Yup.string().min(6, "donnez au moin le numero de la rue et la vile"),
     bio: Yup.string().required().min(6, "champ bio est obligatoir"),
-    city: Yup.string().required()
+    city: Yup.string().required(" le champ ville est obligatoir"),
+    gender: Yup.string().required("le champs sexe est obligatoir")
 
 
 
@@ -156,13 +167,49 @@ function App() {
                           })
                         }
 
-                        <div id="adresse2_help" className="invalid-feedback d-block">
-                          <ErrorMessage name="city" />
-                        </div>
+
                       </Field>
+                      <div id="adresse2_help" className="invalid-feedback d-block">
+                        <ErrorMessage name="city" />
+                      </div>
                     </div>
 
+                    <div className="mb-3">
+                      <label htmlFor="gender" className="form-label">Sexe</label>
+                      <br></br>
 
+                      <Field
+                        as="select"
+                        name="gender" className="form-check-input" id="gender"
+                        options={radioOptions}
+                      >
+                        {
+                          ({ field }) => {
+                            return radioOptions.map(option => {
+                              return (
+                                <React.Fragment key={option.key} >
+                                  <input className="px-3"
+                                    {...field}
+                                    type="radio"
+                                    id={option.value}
+                                    value={option.value}
+                                    checked={field.value === option.value}
+
+                                  />
+                                  <label htmlFor="gender" className="form-label px-2">{option.key}</label>
+
+                                </React.Fragment>
+                              );
+                            });
+                          }
+                        }
+
+
+                      </Field>
+                      <div id="gender" className="invalid-feedback d-block">
+                        <ErrorMessage name="gender" />
+                      </div>
+                    </div>
 
                     <button type="submit" className="btn btn-primary"
                       disabled={!formik.isValide && !formik.dirty}>Submit</button>
